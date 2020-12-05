@@ -1,6 +1,7 @@
 package script
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -20,6 +21,18 @@ func Args() *Pipe {
 // Echo returns a pipe containing the supplied string.
 func Echo(s string) *Pipe {
 	return NewPipe().WithReader(strings.NewReader(s))
+}
+
+// Echof is similar to Echo and Printf as it takes a format string and a number
+// of values to display.
+func Echof(formatString string, args ...interface{}) *Pipe {
+	formatted := fmt.Sprintf(formatString, args...)
+	return Echo(formatted)
+}
+
+// Echoln is similar to Echo but with a new line character in the end.
+func Echoln(s string) *Pipe {
+	return Echof("%s\n", s)
 }
 
 // Exec runs an external command and returns a pipe containing the output. If
